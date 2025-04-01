@@ -6,117 +6,197 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>HOME</title>
+	<title>Profile</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
     <style>
+        body {
+            background-color: #f0f2f5;
+        }
+        .profile-card {
+            max-width: 400px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 50px auto;
+        }
+        .profile-image-container {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #f0f2f5;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+            border: 5px solid #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .profile-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .profile-name {
+            color: #0275d8;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .profile-username {
+            color: #6c757d;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .profile-info {
+            padding: 15px;
+            margin: 10px 15px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+        .profile-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+        }
+        .profile-label {
+            display: inline-block;
+            padding: 5px 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            font-size: 14px;
+            margin: 10px auto;
+        }
+        .admin-section {
+            margin-top: 30px;
+        }
         .profile-img-small {
             width: 40px;
             height: 40px;
             border-radius: 50%;
             object-fit: cover;
         }
-        .profile-img-card {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 0 auto;
-            border: 3px solid #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
     </style>
 </head>
 <body>
-      <div class="container d-flex justify-content-center align-items-center"
-      style="min-height: 100vh">
-      	<?php if ($_SESSION['role'] == 'admin') {?>
-      		<!-- For Admin -->
-      		<div class="card" style="width: 18rem;">
-              <?php 
-              $admin_img = isset($_SESSION['profile_image']) && !empty($_SESSION['profile_image']) 
-                  ? "uploads/profile/" . $_SESSION['profile_image'] 
-                  : "img/admin-default.png";
-              ?>
-			  <img src="<?=$admin_img?>" 
-			       class="card-img-top profile-img-card" 
-			       alt="admin image">
-			  <div class="card-body text-center">
-			    <h5 class="card-title">
-			    	<?=$_SESSION['name']?>
-			    </h5>
-			    <a href="logout.php" class="btn btn-dark">Logout</a>
-			  </div>
-			</div>
-			<div class="p-3">
-				<?php include 'php/members.php';
-                 if (mysqli_num_rows($res) > 0) {?>
-                  
-				<h1 class="display-4 fs-1">Members</h1>
-				<div class="d-flex justify-content-end mb-3">
-					<a href="add-user.php" class="btn btn-success"><i class="fas fa-user-plus"></i> Add User</a>
-				</div>
-				<table class="table" 
-				       style="width: 42rem;">
-				  <thead>
-				    <tr>
-				      <th scope="col">#</th>
-                      <th scope="col">Image</th>
-				      <th scope="col">Name</th>
-				      <th scope="col">User name</th>
-				      <th scope="col">Role</th>
-				      <th scope="col">Actions</th>
-				    </tr>
-				  </thead>
-				  <tbody>
-				  	<?php 
-				  	$i = 1;
-				  	while ($rows = mysqli_fetch_assoc($res)) {?>
-				    <tr>
-				      <th scope="row"><?=$i?></th>
-                      <td>
-                        <?php 
-                        $img_path = isset($rows['profile_image']) && !empty($rows['profile_image']) 
-                            ? "uploads/profile/" . $rows['profile_image'] 
-                            : ($rows['role'] == 'admin' ? "img/admin-default.png" : "img/user-default.png");
-                        ?>
-                        <img src="<?=$img_path?>" class="profile-img-small" alt="Profile">
-                      </td>
-				      <td><?=$rows['name']?></td>
-				      <td><?=$rows['username']?></td>
-				      <td><?=$rows['role']?></td>
-				      <td>
-                        <a href="edit-user.php?id=<?=$rows['id']?>" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Edit</a>
-                        <a href="php/delete-user.php?id=<?=$rows['id']?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this user?');"><i class="fas fa-trash"></i> Delete</a>
-                      </td>
-				    </tr>
-				    <?php $i++; }?>
-				  </tbody>
-				</table>
-				<?php }?>
-			</div>
-      	<?php }else { ?>
-      		<!-- FORE USERS -->
-      		<div class="card" style="width: 18rem;">
-              <?php 
-              $user_img = isset($_SESSION['profile_image']) && !empty($_SESSION['profile_image']) 
-                  ? "uploads/profile/" . $_SESSION['profile_image'] 
-                  : "img/user-default.png";
-              ?>
-			  <img src="<?=$user_img?>" 
-			       class="card-img-top profile-img-card" 
-			       alt="user image">
-			  <div class="card-body text-center">
-			    <h5 class="card-title">
-			    	<?=$_SESSION['name']?>
-			    </h5>
-			    <a href="logout.php" class="btn btn-dark">Logout</a>
-			  </div>
-			</div>
-      	<?php } ?>
-      </div>
+    <div class="container">
+        <?php if ($_SESSION['role'] == 'admin') {?>
+            <!-- Admin Profile Card -->
+            <div class="profile-card">
+                <?php 
+                $admin_img = isset($_SESSION['profile_image']) && !empty($_SESSION['profile_image']) 
+                    ? "uploads/profile/" . $_SESSION['profile_image'] 
+                    : "img/admin-default.png";
+                ?>
+                <div class="profile-image-container">
+                    <img src="<?=$admin_img?>" alt="profile image">
+                </div>
+                
+                <div class="profile-name"><?=$_SESSION['name']?></div>
+                <div class="profile-username">@<?=$_SESSION['username']?></div>
+                
+                <div class="text-center">
+                    <span class="profile-label">ADMIN | Active</span>
+                </div>
+                
+                <div class="profile-info">
+                    <h6>About Me</h6>
+                    <p>Administrator account with full system access.</p>
+                </div>
+                
+                <div class="profile-buttons">
+                    <a href="edit-profile.php" class="btn btn-primary">Edit Profile</a>
+                    <a href="logout.php" class="btn btn-warning">Logout</a>
+                </div>
+            </div>
+            
+            <!-- Admin Dashboard Section -->
+            <div class="admin-section">
+                <?php include 'php/members.php';
+                if (mysqli_num_rows($res) > 0) {?>
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3>System Users</h3>
+                        <a href="add-user.php" class="btn btn-success"><i class="fas fa-user-plus"></i> Add User</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Username</th>
+                                        <th scope="col">Role</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                    $i = 1;
+                                    while ($rows = mysqli_fetch_assoc($res)) {?>
+                                    <tr>
+                                        <th scope="row"><?=$i?></th>
+                                        <td>
+                                            <?php 
+                                            $img_path = isset($rows['profile_image']) && !empty($rows['profile_image']) 
+                                                ? "uploads/profile/" . $rows['profile_image'] 
+                                                : ($rows['role'] == 'admin' ? "img/admin-default.png" : "img/user-default.png");
+                                            ?>
+                                            <img src="<?=$img_path?>" class="profile-img-small" alt="Profile">
+                                        </td>
+                                        <td><?=$rows['name']?></td>
+                                        <td><?=$rows['username']?></td>
+                                        <td><?=$rows['role']?></td>
+                                        <td>
+                                            <a href="edit-user.php?id=<?=$rows['id']?>" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
+                                            <a href="php/delete-user.php?id=<?=$rows['id']?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this user?');"><i class="fas fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                    <?php $i++; }?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <?php }?>
+            </div>
+        <?php } else { ?>
+            <!-- Regular User Profile Card -->
+            <div class="profile-card">
+                <?php 
+                $user_img = isset($_SESSION['profile_image']) && !empty($_SESSION['profile_image']) 
+                    ? "uploads/profile/" . $_SESSION['profile_image'] 
+                    : "img/user-default.png";
+                ?>
+                <div class="profile-image-container">
+                    <img src="<?=$user_img?>" alt="profile image">
+                </div>
+                
+                <div class="profile-name"><?=$_SESSION['name']?></div>
+                <div class="profile-username">@<?=$_SESSION['username']?></div>
+                
+                <div class="text-center">
+                    <span class="profile-label">BSCS | 4th Year</span>
+                </div>
+                
+                <div class="profile-info">
+                    <h6>About Me</h6>
+                    <p>Welcome to my profile! This is where you can add information about yourself.</p>
+                </div>
+                
+                <div class="profile-buttons">
+                    <a href="edit-profile.php" class="btn btn-primary">Edit Profile</a>
+                    <a href="logout.php" class="btn btn-warning">Logout</a>
+                </div>
+            </div>
+        <?php } ?>
+    </div>
 </body>
 </html>
-<?php }else{
+<?php } else {
 	header("Location: index.php");
 } ?>

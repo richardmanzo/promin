@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 03, 2021 at 03:39 PM
--- Server version: 10.4.6-MariaDB
--- PHP Version: 7.3.9
+-- Generation Time: Apr 01, 2025 at 07:41 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -33,16 +32,21 @@ CREATE TABLE `users` (
   `role` enum('user','admin') NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `name` varchar(255) NOT NULL,
+  `about_me` text DEFAULT NULL,
+  `education` varchar(255) DEFAULT NULL,
+  `year` int(11) DEFAULT NULL,
+  `profile_image` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `role`, `username`, `password`, `name`) VALUES
-(1, 'admin', 'elias', '81dc9bdb52d04dc20036dbd8313ed055', 'Elias Abdurrahman'),
-(2, 'user', 'John', 'e2fc714c4727ee9395f324cd2e7f331f', 'John Doe');
+INSERT INTO `users` (`id`, `role`, `username`, `password`, `name`, `about_me`, `education`, `year`, `profile_image`) VALUES
+(1, 'admin', 'admin', '81dc9bdb52d04dc20036dbd8313ed055', 'admin', NULL, NULL, NULL, '67ec203c1fe2b.png'),
+(3, 'user', 'chad', '080f651e3fcca17df3a47c2cecfcb880', 'Richard Manzo', 'SAS as', 'BSCS 4th year', NULL, '67ec2060ea2a8.png'),
+(4, '', 'newuser', '482c811da5d5b4bc6d497ffa98491e38', 'User Name', 'About me text', 'Computer Science', 2023, NULL);
 
 --
 -- Indexes for dumped tables
@@ -62,7 +66,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
