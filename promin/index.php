@@ -20,6 +20,11 @@
 				  <?=$_GET['error']?>
 			  </div>
 			  <?php } ?>
+              <?php if (isset($_GET['success'])) { ?>
+              <div class="alert alert-success" role="alert">
+                  <?=$_GET['success']?>
+              </div>
+              <?php } ?>
 		  <div class="mb-3">
 		    <label for="username" 
 		           class="form-label">User name</label>
@@ -48,6 +53,7 @@
 		 
 		  <button type="submit" 
 		          class="btn btn-primary">LOGIN</button>
+          <a href="register.php" class="btn btn-success ms-2">REGISTER</a>
 		</form>
       </div>
 </body>
